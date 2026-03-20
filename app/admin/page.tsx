@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import { auth } from "@clerk/nextjs/server";
 import { UserButton } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
@@ -20,7 +22,6 @@ export default async function AdminPage() {
 
   return (
     <div className="min-h-screen bg-ink mesh-bg">
-      {/* Nav */}
       <nav className="border-b border-border bg-surface/80 backdrop-blur sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
@@ -37,7 +38,6 @@ export default async function AdminPage() {
       </nav>
 
       <div className="max-w-5xl mx-auto px-6 py-10">
-        {/* Stats cards */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-10">
           <StatCard label="Total signups" value={signups.length} />
           <StatCard label="Downloads" value={downloadCount} />
@@ -55,15 +55,10 @@ export default async function AdminPage() {
           />
         </div>
 
-        {/* Waitlist table */}
         <div className="rounded-2xl border border-border bg-surface overflow-hidden">
           <div className="px-6 py-4 border-b border-border flex items-center justify-between">
-            <h2 className="font-syne font-bold text-white text-[15px]">
-              Waitlist signups
-            </h2>
-            <span className="text-[11px] font-mono text-muted">
-              {signups.length} total
-            </span>
+            <h2 className="font-syne font-bold text-white text-[15px]">Waitlist signups</h2>
+            <span className="text-[11px] font-mono text-muted">{signups.length} total</span>
           </div>
 
           {signups.length === 0 ? (
@@ -87,11 +82,8 @@ export default async function AdminPage() {
                       <td className="px-6 py-3.5 text-[13px] font-mono text-white">{row.email}</td>
                       <td className="px-6 py-3.5 text-[12px] font-mono text-muted">
                         {new Date(row.createdAt).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
+                          year: "numeric", month: "short", day: "numeric",
+                          hour: "2-digit", minute: "2-digit",
                         })}
                       </td>
                     </tr>
@@ -106,15 +98,7 @@ export default async function AdminPage() {
   );
 }
 
-function StatCard({
-  label,
-  value,
-  small = false,
-}: {
-  label: string;
-  value: string | number;
-  small?: boolean;
-}) {
+function StatCard({ label, value, small = false }: { label: string; value: string | number; small?: boolean }) {
   return (
     <div className="rounded-xl border border-border bg-surface p-5">
       <div className="text-[10.5px] font-mono text-muted uppercase tracking-wider mb-2">{label}</div>

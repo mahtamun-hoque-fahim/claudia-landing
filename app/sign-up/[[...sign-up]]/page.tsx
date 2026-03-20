@@ -1,10 +1,11 @@
+export const runtime = "edge";
+
 import { SignUp } from "@clerk/nextjs";
 
 export default function SignUpPage() {
   return (
     <div className="min-h-screen bg-ink mesh-bg grid-bg flex items-center justify-center px-4">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-accent/5 blur-[100px] pointer-events-none" />
-
       <div className="relative flex flex-col items-center gap-8">
         <div className="flex items-center gap-2.5">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
@@ -17,7 +18,6 @@ export default function SignUpPage() {
             <div className="font-syne text-[9px] text-faint uppercase tracking-widest mt-0.5">Admin access</div>
           </div>
         </div>
-
         <SignUp
           appearance={{
             variables: {
@@ -29,14 +29,10 @@ export default function SignUpPage() {
               colorTextSecondary: "#666666",
               colorNeutral: "#333333",
               borderRadius: "10px",
-              fontFamily: "Syne, system-ui, sans-serif",
             },
             elements: {
               card: "border border-border shadow-2xl",
-              headerTitle: "font-syne font-black text-white",
-              headerSubtitle: "font-lora text-muted",
-              formButtonPrimary:
-                "bg-accent hover:bg-[#33eb91] text-black font-syne font-bold transition-colors",
+              formButtonPrimary: "bg-accent hover:bg-[#33eb91] text-black font-bold transition-colors",
               footerActionLink: "text-accent hover:text-[#33eb91]",
             },
           }}

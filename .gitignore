@@ -33,3 +33,7 @@ yarn-error.log*
 
 # Local env
 .env.local
+
+# Cloudflare / next-on-pages build output
+.vercel/
+.wrangler/

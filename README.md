@@ -1,7 +1,7 @@
 # Claudia — Landing Page
 
 > Marketing, waitlist & admin page for the **Claudia** Chrome Extension.  
-> Built with **Next.js 14 · Tailwind CSS · Neon · Drizzle ORM · Clerk · Vercel**.
+> **Next.js 14 · Tailwind CSS · Neon · Drizzle ORM · Clerk · Cloudflare Pages**
 
 ---
 
@@ -14,79 +14,75 @@
 | Database | Neon (serverless PostgreSQL) |
 | ORM | Drizzle ORM |
 | Auth | Clerk |
-| Hosting | Vercel |
-
----
-
-## Features
-
-- **Hero** — animated headline, popup mockup, live download counter
-- **Stats bar** — real-time download count from Neon
-- **Features grid** — 4 cards with inline micro-visuals
-- **PDF preview** — dark/light output mockup
-- **How it works** — 3-step walkthrough
-- **Email waitlist** — Neon-backed, duplicate-safe
-- **Admin dashboard** (`/admin`) — Clerk-protected, shows all signups + download count
+| Hosting | Cloudflare Pages |
+| Runtime | Edge (all routes) |
 
 ---
 
 ## Local Setup
 
 ```bash
-# 1. Clone
 git clone https://github.com/mahtamun-hoque-fahim/claudia-landing.git
 cd claudia-landing
-
-# 2. Install
 npm install
-
-# 3. Set env vars
-cp .env.example .env.local
-# Fill in DATABASE_URL, NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY, CLERK_SECRET_KEY
-
-# 4. Push schema to Neon
-npm run db:push
-
-# 5. Seed the downloads counter (run once in Neon SQL editor)
-# INSERT INTO claudia_stats (key, value) VALUES ('downloads', 0) ON CONFLICT DO NOTHING;
-
-# 6. Start dev server
+cp .env.example .env.local   # fill in your keys
+npm run db:push               # push schema to Neon
 npm run dev
+```
+
+---
+
+## Deploy to Cloudflare Pages
+
+### Option A — Git integration (recommended)
+1. Go to [pages.cloudflare.com](https://pages.cloudflare.com) → **Create a project** → **Connect to Git**
+2. Select `mahtamun-hoque-fahim/claudia-landing`
+3. Set build settings:
+   - **Framework preset**: Next.js
+   - **Build command**: `npx @cloudflare/next-on-pages@1`
+   - **Output directory**: `.vercel/output/static`
+4. Add environment variables (see below)
+5. Click **Save and Deploy**
+
+### Option B — Wrangler CLI
+```bash
+npm run pages:build
+npx wrangler pages deploy .vercel/output/static --project-name claudia-landing
+```
+
+### Environment variables to add in Cloudflare dashboard
+```
+DATABASE_URL                        = postgresql://...
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY   = pk_test_...
+CLERK_SECRET_KEY                    = sk_test_...
+NEXT_PUBLIC_CLERK_SIGN_IN_URL       = /sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL       = /sign-up
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL = /admin
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL = /admin
 ```
 
 ---
 
 ## Neon Setup
 
-1. Create a project at [neon.tech](https://neon.tech)
-2. Copy the **Connection string** into `DATABASE_URL` in `.env.local`
-3. Run `npm run db:push` to create tables
-4. Seed: run the INSERT above in the Neon SQL editor
+Run this once in the [Neon SQL Editor](https://console.neon.tech):
 
----
+```sql
+CREATE TABLE IF NOT EXISTS claudia_waitlist (
+  id         uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  email      text NOT NULL UNIQUE,
+  created_at timestamp DEFAULT now() NOT NULL
+);
 
-## Clerk Setup
+CREATE TABLE IF NOT EXISTS claudia_stats (
+  id         uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  key        text NOT NULL UNIQUE,
+  value      bigint NOT NULL DEFAULT 0,
+  updated_at timestamp DEFAULT now() NOT NULL
+);
 
-1. Create an app at [clerk.com](https://clerk.com)
-2. Copy **Publishable Key** and **Secret Key** into `.env.local`
-3. In Clerk dashboard → **Redirect URLs**, add:
-   - Sign-in fallback: `/admin`
-   - Sign-up fallback: `/admin`
-
----
-
-## Deploy to Vercel
-
-```bash
-vercel --prod
+INSERT INTO claudia_stats (key, value) VALUES ('downloads', 0) ON CONFLICT DO NOTHING;
 ```
-
-Add these env vars in Vercel dashboard:
-- `DATABASE_URL`
-- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
-- `CLERK_SECRET_KEY`
-- `NEXT_PUBLIC_CLERK_SIGN_IN_URL` = `/sign-in`
-- `NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL` = `/admin`
 
 ---
 

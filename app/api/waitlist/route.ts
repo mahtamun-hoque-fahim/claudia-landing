@@ -3,6 +3,8 @@ import { getDb } from "@/lib/db";
 import { waitlist } from "@/lib/schema";
 import { eq } from "drizzle-orm";
 
+export const runtime = "edge";
+
 export async function POST(req: NextRequest) {
   try {
     const { email } = await req.json();
@@ -18,7 +20,6 @@ export async function POST(req: NextRequest) {
     const db = getDb();
     const clean = email.trim().toLowerCase();
 
-    // Check for duplicate
     const existing = await db
       .select({ id: waitlist.id })
       .from(waitlist)

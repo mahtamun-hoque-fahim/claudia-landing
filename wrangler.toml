@@ -1,0 +1,10 @@
+name = "claudia-landing"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+pages_build_output_dir = ".vercel/output/static"
+
+# Environment variables are set in the Cloudflare dashboard
+# Dashboard → Pages → claudia-landing → Settings → Environment Variables
+# Add: DATABASE_URL, NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY, CLERK_SECRET_KEY
+#      NEXT_PUBLIC_CLERK_SIGN_IN_URL, NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL
