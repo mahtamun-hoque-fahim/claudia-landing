@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
@@ -12,7 +14,6 @@ export const metadata: Metadata = {
     title: "Claudia — Export Claude Chats as Beautiful PDFs",
     description: "Chrome extension for exporting Claude.ai conversations as beautifully formatted PDFs.",
     type: "website",
-    url: "https://claudia-landing.vercel.app",
     siteName: "Claudia",
   },
   twitter: {
@@ -24,8 +25,11 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  // Safe fallback so build doesn't crash if key isn't available at compile time
+  const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ?? "pk_test_placeholder";
+
   return (
-    <ClerkProvider>
+    <ClerkProvider publishableKey={publishableKey}>
       <html lang="en" className="scroll-smooth">
         <head>
           <link rel="preconnect" href="https://fonts.googleapis.com" />
