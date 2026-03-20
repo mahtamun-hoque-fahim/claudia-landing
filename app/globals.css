@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap");
+
+:root {
+  --font-syne: "Syne";
+  --font-jetbrains: "JetBrains Mono";
+  --font-lora: "Lora";
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #3a3a3a; }
+
+/* ── Selection ── */
+::selection { background: rgba(0, 230, 118, 0.2); color: #00e676; }
+
+/* ── Base ── */
+html { scroll-behavior: smooth; }
+
+body {
+  background: #0a0a0a;
+  color: #e0e0d8;
+  font-family: var(--font-lora), Georgia, serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ── Noise texture overlay ── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  opacity: 0.028;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── Utility: accent shimmer text ── */
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    #00e676 0%,
+    #69ffb4 40%,
+    #00e676 60%,
+    #00b85b 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+
+/* ── Glow ring for CTA ── */
+.glow-ring {
+  box-shadow:
+    0 0 0 1px rgba(0, 230, 118, 0.3),
+    0 0 32px rgba(0, 230, 118, 0.12),
+    inset 0 1px 0 rgba(0, 230, 118, 0.1);
+}
+.glow-ring:hover {
+  box-shadow:
+    0 0 0 1px rgba(0, 230, 118, 0.6),
+    0 0 48px rgba(0, 230, 118, 0.22),
+    inset 0 1px 0 rgba(0, 230, 118, 0.15);
+}
+
+/* ── Grid background ── */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(0, 230, 118, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 230, 118, 0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* ── Gradient mesh ── */
+.mesh-bg {
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 60%, rgba(0, 230, 118, 0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 80% 20%, rgba(0, 180, 90, 0.05) 0%, transparent 60%),
+    #0a0a0a;
+}
+
+/* ── Stagger animation delays ── */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
+
+/* ── Opacity for staggered fade ── */
+.anim-hidden { opacity: 0; }
+
+/* ── Code block custom styling ── */
+.code-window {
+  background: #0d0d0d;
+  border: 1px solid #1e1e1e;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.code-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: #141414;
+  border-bottom: 1px solid #1e1e1e;
+}
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot-red { background: #ff5f57; }
+.dot-yellow { background: #febc2e; }
+.dot-green { background: #28c840; }
