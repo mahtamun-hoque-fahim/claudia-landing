@@ -1,4 +1,5 @@
-import { auth, UserButton } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
+import { UserButton } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { getDb } from "@/lib/db";
 import { waitlist, stats } from "@/lib/schema";
@@ -44,7 +45,10 @@ export default async function AdminPage() {
             label="Latest signup"
             value={
               signups[0]
-                ? new Date(signups[0].createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })
+                ? new Date(signups[0].createdAt).toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                  })
                 : "—"
             }
             small
