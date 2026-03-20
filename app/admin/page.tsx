@@ -8,16 +8,14 @@ import { waitlist, stats } from "@/lib/schema";
 import { desc } from "drizzle-orm";
 
 export default async function AdminPage() {
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) redirect("/sign-in");
 
   const db = getDb();
-
   const [signups, statRows] = await Promise.all([
     db.select().from(waitlist).orderBy(desc(waitlist.createdAt)),
     db.select().from(stats),
   ]);
-
   const downloadCount = statRows.find((r) => r.key === "downloads")?.value ?? 0;
 
   return (
@@ -33,7 +31,7 @@ export default async function AdminPage() {
             <span className="font-syne font-bold text-accent text-sm">Claudia</span>
             <span className="text-[10px] font-mono text-faint px-2 py-0.5 rounded-full border border-border">admin</span>
           </div>
-          <UserButton afterSignOutUrl="/" />
+          <UserButton />
         </div>
       </nav>
 
@@ -43,14 +41,7 @@ export default async function AdminPage() {
           <StatCard label="Downloads" value={downloadCount} />
           <StatCard
             label="Latest signup"
-            value={
-              signups[0]
-                ? new Date(signups[0].createdAt).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                  })
-                : "—"
-            }
+            value={signups[0] ? new Date(signups[0].createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : "—"}
             small
           />
         </div>
@@ -60,7 +51,6 @@ export default async function AdminPage() {
             <h2 className="font-syne font-bold text-white text-[15px]">Waitlist signups</h2>
             <span className="text-[11px] font-mono text-muted">{signups.length} total</span>
           </div>
-
           {signups.length === 0 ? (
             <div className="px-6 py-12 text-center">
               <p className="font-lora text-muted text-sm">No signups yet.</p>
@@ -81,10 +71,7 @@ export default async function AdminPage() {
                       <td className="px-6 py-3.5 text-[12px] font-mono text-faint">{i + 1}</td>
                       <td className="px-6 py-3.5 text-[13px] font-mono text-white">{row.email}</td>
                       <td className="px-6 py-3.5 text-[12px] font-mono text-muted">
-                        {new Date(row.createdAt).toLocaleDateString("en-US", {
-                          year: "numeric", month: "short", day: "numeric",
-                          hour: "2-digit", minute: "2-digit",
-                        })}
+                        {new Date(row.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
                       </td>
                     </tr>
                   ))}

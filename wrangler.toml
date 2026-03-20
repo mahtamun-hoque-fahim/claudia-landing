@@ -1,7 +1,4 @@
 name = "claudia-landing"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
-
-# Build command and output dir are set in the Cloudflare Pages dashboard:
-# Build command:  npx @cloudflare/next-on-pages@1
-# Output dir:     .vercel/output/static
+pages_build_output_dir = ".vercel/output/static"
